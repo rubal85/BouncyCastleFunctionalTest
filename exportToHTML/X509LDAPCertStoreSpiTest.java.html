@@ -1,0 +1,107 @@
+<html>
+<head>
+<title>X509LDAPCertStoreSpiTest.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+.s4 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+X509LDAPCertStoreSpiTest.java</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">junit</span><span class="s2">.</span><span class="s1">jupiter</span><span class="s2">.</span><span class="s1">api</span><span class="s2">.</span><span class="s1">BeforeEach</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">junit</span><span class="s2">.</span><span class="s1">jupiter</span><span class="s2">.</span><span class="s1">api</span><span class="s2">.</span><span class="s1">Test</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">mockito</span><span class="s2">.</span><span class="s1">Mockito</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">bouncycastle</span><span class="s2">.</span><span class="s1">jce</span><span class="s2">.</span><span class="s1">X509LDAPCertStoreParameters</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">org</span><span class="s2">.</span><span class="s1">bouncycastle</span><span class="s2">.</span><span class="s1">jce</span><span class="s2">.</span><span class="s1">provider</span><span class="s2">.</span><span class="s1">X509LDAPCertStoreSpi</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">javax</span><span class="s2">.</span><span class="s1">naming</span><span class="s2">.</span><span class="s1">NamingEnumeration</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">javax</span><span class="s2">.</span><span class="s1">naming</span><span class="s2">.</span><span class="s1">directory</span><span class="s2">.</span><span class="s1">Attribute</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">javax</span><span class="s2">.</span><span class="s1">naming</span><span class="s2">.</span><span class="s1">directory</span><span class="s2">.</span><span class="s1">Attributes</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">javax</span><span class="s2">.</span><span class="s1">naming</span><span class="s2">.</span><span class="s1">directory</span><span class="s2">.</span><span class="s1">DirContext</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">javax</span><span class="s2">.</span><span class="s1">naming</span><span class="s2">.</span><span class="s1">directory</span><span class="s2">.</span><span class="s1">SearchResult</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">cert</span><span class="s2">.</span><span class="s1">CertStoreException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">security</span><span class="s2">.</span><span class="s1">cert</span><span class="s2">.</span><span class="s1">X509CertSelector</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">Collection</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">HashSet</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">Set</span><span class="s2">;</span>
+
+<span class="s0">import static </span><span class="s1">org</span><span class="s2">.</span><span class="s1">junit</span><span class="s2">.</span><span class="s1">jupiter</span><span class="s2">.</span><span class="s1">api</span><span class="s2">.</span><span class="s1">Assertions</span><span class="s2">.*;</span>
+<span class="s0">import static </span><span class="s1">org</span><span class="s2">.</span><span class="s1">mockito</span><span class="s2">.</span><span class="s1">ArgumentMatchers</span><span class="s2">.</span><span class="s1">anyString</span><span class="s2">;</span>
+<span class="s0">import static </span><span class="s1">org</span><span class="s2">.</span><span class="s1">mockito</span><span class="s2">.</span><span class="s1">ArgumentMatchers</span><span class="s2">.</span><span class="s1">eq</span><span class="s2">;</span>
+<span class="s0">import static </span><span class="s1">org</span><span class="s2">.</span><span class="s1">mockito</span><span class="s2">.</span><span class="s1">Mockito</span><span class="s2">.*;</span>
+
+<span class="s0">public class </span><span class="s1">X509LDAPCertStoreSpiTest </span><span class="s2">{</span>
+
+    <span class="s0">private </span><span class="s1">X509LDAPCertStoreSpi spi</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">X509LDAPCertStoreParameters params</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">DirContext mockContext</span><span class="s2">;</span>
+
+    <span class="s1">@BeforeEach</span>
+    <span class="s0">public void </span><span class="s1">setUp</span><span class="s2">() </span><span class="s0">throws </span><span class="s1">Exception </span><span class="s2">{</span>
+        <span class="s1">params </span><span class="s2">= </span><span class="s1">mock</span><span class="s2">(</span><span class="s1">X509LDAPCertStoreParameters</span><span class="s2">.</span><span class="s0">class</span><span class="s2">);</span>
+        <span class="s1">when</span><span class="s2">(</span><span class="s1">params</span><span class="s2">.</span><span class="s1">getLdapURL</span><span class="s2">()).</span><span class="s1">thenReturn</span><span class="s2">(</span><span class="s3">&quot;ldap://dummy.url&quot;</span><span class="s2">);</span>
+        <span class="s1">when</span><span class="s2">(</span><span class="s1">params</span><span class="s2">.</span><span class="s1">getBaseDN</span><span class="s2">()).</span><span class="s1">thenReturn</span><span class="s2">(</span><span class="s3">&quot;dc=example,dc=com&quot;</span><span class="s2">);</span>
+        <span class="s1">when</span><span class="s2">(</span><span class="s1">params</span><span class="s2">.</span><span class="s1">getUserCertificateAttribute</span><span class="s2">()).</span><span class="s1">thenReturn</span><span class="s2">(</span><span class="s3">&quot;userCertificate&quot;</span><span class="s2">);</span>
+        <span class="s1">when</span><span class="s2">(</span><span class="s1">params</span><span class="s2">.</span><span class="s1">getLdapUserCertificateAttributeName</span><span class="s2">()).</span><span class="s1">thenReturn</span><span class="s2">(</span><span class="s3">&quot;userCertificate&quot;</span><span class="s2">);</span>
+        <span class="s1">when</span><span class="s2">(</span><span class="s1">params</span><span class="s2">.</span><span class="s1">getUserCertificateSubjectAttributeName</span><span class="s2">()).</span><span class="s1">thenReturn</span><span class="s2">(</span><span class="s3">&quot;subject&quot;</span><span class="s2">);</span>
+
+        <span class="s1">mockContext </span><span class="s2">= </span><span class="s1">mock</span><span class="s2">(</span><span class="s1">DirContext</span><span class="s2">.</span><span class="s0">class</span><span class="s2">);</span>
+        <span class="s4">// Override search method to return mocked results</span>
+        <span class="s1">when</span><span class="s2">(</span><span class="s1">mockContext</span><span class="s2">.</span><span class="s1">search</span><span class="s2">(</span><span class="s1">anyString</span><span class="s2">(), </span><span class="s1">anyString</span><span class="s2">(), </span><span class="s1">any</span><span class="s2">())).</span><span class="s1">thenReturn</span><span class="s2">(</span><span class="s1">mock</span><span class="s2">(</span><span class="s1">NamingEnumeration</span><span class="s2">.</span><span class="s0">class</span><span class="s2">));</span>
+
+        <span class="s1">spi </span><span class="s2">= </span><span class="s0">new </span><span class="s1">X509LDAPCertStoreSpi</span><span class="s2">(</span><span class="s1">params</span><span class="s2">) {</span>
+       <span class="s4">//     @Override</span>
+            <span class="s0">protected </span><span class="s1">DirContext connectLDAP</span><span class="s2">() {</span>
+                <span class="s0">return </span><span class="s1">mockContext</span><span class="s2">;</span>
+            <span class="s2">}</span>
+        <span class="s2">};</span>
+    <span class="s2">}</span>
+
+    <span class="s1">@Test</span>
+    <span class="s0">public void </span><span class="s1">testEngineGetCertificates</span><span class="s2">() </span><span class="s0">throws </span><span class="s1">Exception </span><span class="s2">{</span>
+        <span class="s4">// Mock LDAP results</span>
+        <span class="s1">NamingEnumeration</span><span class="s2">&lt;</span><span class="s1">SearchResult</span><span class="s2">&gt; </span><span class="s1">mockResults </span><span class="s2">= </span><span class="s1">mock</span><span class="s2">(</span><span class="s1">NamingEnumeration</span><span class="s2">.</span><span class="s0">class</span><span class="s2">);</span>
+        <span class="s1">when</span><span class="s2">(</span><span class="s1">mockContext</span><span class="s2">.</span><span class="s1">search</span><span class="s2">(</span><span class="s1">eq</span><span class="s2">(</span><span class="s1">params</span><span class="s2">.</span><span class="s1">getBaseDN</span><span class="s2">()), </span><span class="s1">anyString</span><span class="s2">(), </span><span class="s1">any</span><span class="s2">())).</span><span class="s1">thenReturn</span><span class="s2">(</span><span class="s1">mockResults</span><span class="s2">);</span>
+
+        <span class="s4">// Create mock SearchResult and its attributes</span>
+        <span class="s1">SearchResult mockResult </span><span class="s2">= </span><span class="s1">mock</span><span class="s2">(</span><span class="s1">SearchResult</span><span class="s2">.</span><span class="s0">class</span><span class="s2">);</span>
+        <span class="s1">Attribute mockAttribute </span><span class="s2">= </span><span class="s1">mock</span><span class="s2">(</span><span class="s1">Attribute</span><span class="s2">.</span><span class="s0">class</span><span class="s2">);</span>
+        <span class="s1">NamingEnumeration</span><span class="s2">&lt;?&gt; </span><span class="s1">mockAttributeValues </span><span class="s2">= </span><span class="s1">mock</span><span class="s2">(</span><span class="s1">NamingEnumeration</span><span class="s2">.</span><span class="s0">class</span><span class="s2">);</span>
+
+        <span class="s4">// Define mock behavior for attribute values</span>
+        <span class="s1">when</span><span class="s2">(</span><span class="s1">mockAttribute</span><span class="s2">.</span><span class="s1">getAll</span><span class="s2">()).</span><span class="s1">thenReturn</span><span class="s2">(</span><span class="s1">mockAttributeValues</span><span class="s2">);</span>
+        <span class="s1">when</span><span class="s2">(</span><span class="s1">mockResults</span><span class="s2">.</span><span class="s1">hasMoreElements</span><span class="s2">()).</span><span class="s1">thenReturn</span><span class="s2">(</span><span class="s0">true</span><span class="s2">, </span><span class="s0">false</span><span class="s2">);</span>
+        <span class="s1">when</span><span class="s2">(</span><span class="s1">mockResults</span><span class="s2">.</span><span class="s1">next</span><span class="s2">()).</span><span class="s1">thenReturn</span><span class="s2">(</span><span class="s1">mockResult</span><span class="s2">);</span>
+        <span class="s1">when</span><span class="s2">(</span><span class="s1">mockResult</span><span class="s2">.</span><span class="s1">getAttributes</span><span class="s2">()).</span><span class="s1">thenReturn</span><span class="s2">((</span><span class="s1">Attributes</span><span class="s2">) </span><span class="s1">mockAttribute</span><span class="s2">);</span>
+        <span class="s1">when</span><span class="s2">(</span><span class="s1">mockAttributeValues</span><span class="s2">.</span><span class="s1">hasMore</span><span class="s2">()).</span><span class="s1">thenReturn</span><span class="s2">(</span><span class="s0">true</span><span class="s2">, </span><span class="s0">false</span><span class="s2">);</span>
+        <span class="s1">when</span><span class="s2">(</span><span class="s1">mockAttributeValues</span><span class="s2">.</span><span class="s1">next</span><span class="s2">()).</span><span class="s1">thenReturn</span><span class="s2">(</span><span class="s0">new byte</span><span class="s2">[]{</span><span class="s4">/* mock certificate bytes */</span><span class="s2">});</span>
+
+        <span class="s4">// Configure the mocked NamingEnumeration to return the mockAttributeValues</span>
+        <span class="s1">when</span><span class="s2">(</span><span class="s1">mockResults</span><span class="s2">.</span><span class="s1">nextElement</span><span class="s2">()).</span><span class="s1">thenReturn</span><span class="s2">(</span><span class="s1">mockResult</span><span class="s2">);</span>
+
+        <span class="s1">X509CertSelector xselector </span><span class="s2">= </span><span class="s0">new </span><span class="s1">X509CertSelector</span><span class="s2">();</span>
+
+        <span class="s1">Collection</span><span class="s2">&lt;?&gt; </span><span class="s1">result </span><span class="s2">= </span><span class="s1">spi</span><span class="s2">.</span><span class="s1">engineGetCertificates</span><span class="s2">(</span><span class="s1">xselector</span><span class="s2">);</span>
+
+        <span class="s1">assertNotNull</span><span class="s2">(</span><span class="s1">result</span><span class="s2">);</span>
+        <span class="s1">assertFalse</span><span class="s2">(</span><span class="s1">result</span><span class="s2">.</span><span class="s1">isEmpty</span><span class="s2">());</span>
+
+        <span class="s4">// Verify search was called with expected filter values</span>
+        <span class="s1">verify</span><span class="s2">(</span><span class="s1">mockContext</span><span class="s2">, </span><span class="s1">atLeastOnce</span><span class="s2">()).</span><span class="s1">search</span><span class="s2">(</span>
+                <span class="s1">eq</span><span class="s2">(</span><span class="s1">params</span><span class="s2">.</span><span class="s1">getBaseDN</span><span class="s2">()),</span>
+                <span class="s1">contains</span><span class="s2">(</span><span class="s3">&quot;*&quot;</span><span class="s2">),</span>
+                <span class="s1">any</span><span class="s2">()</span>
+        <span class="s2">);</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

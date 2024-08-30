@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>FunstionalityTest_bc-java</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <dependencies>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+            <version>1.70</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/jars/bcprov-jdk15on-1.70.lineaje-b01.jar/</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcutil-jdk15on</artifactId>
+            <version>1.70</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/jars/bcutil-jdk15on-1.70.lineaje-b01.jar/</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.5.0</version> <!-- Use the latest version available -->
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.8.1</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.11.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.unboundid</groupId>
+            <artifactId>unboundid-ldapsdk</artifactId>
+            <version>7.0.1</version> </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.directory.api/api-ldap-client-api -->
+        <dependency>
+            <groupId>org.apache.directory.api</groupId>
+            <artifactId>api-ldap-client-api</artifactId>
+            <version>2.1.7</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/LDAP_jar/api-ldap-client-api-2.1.7.jar/</systemPath>
+
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.sun.jndi/ldap -->
+        <dependency>
+            <groupId>com.sun.jndi</groupId>
+            <artifactId>ldap</artifactId>
+            <version>1.2.4</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/LDAP_jar/ldap-1_2_4/lib/ldap.jar</systemPath>
+
+        </dependency>
+
+
+    </dependencies>
+
+    <properties>
+        <maven.compiler.source>22</maven.compiler.source>
+        <maven.compiler.target>22</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+</project>

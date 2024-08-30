@@ -1,0 +1,900 @@
+<HTML>
+<HEAD>
+<title>
+LDAP Service Provider for JNDI 1.2 Optional Package
+</title>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" TEXT=#000000 LINK=#0000ff VLINK=#000077
+ALINK=#ff0000>
+<hr SIZE=3 NOSHADE WIDTH="100%">
+<center>
+<h1>
+LDAP Service Provider for the 
+<br>
+Java Naming and Directory Interface<font size=4><sup>TM</sup></font> (JNDI) 1.2
+<br>
+Optional Package
+</h1>
+</center>
+<hr SIZE=3 NOSHADE WIDTH="100%">
+<P><FONT SIZE=-1>Please send feedback to 
+<a href="mailto:jndi@java.sun.com">jndi@java.sun.com</a></FONT>
+
+<P>
+<P><I>Table of Contents</I>
+<OL>
+<LI>
+<A HREF="#INTRO">Introduction</A></LI>
+
+<LI>
+<A HREF="#SASL">SASL</A></LI>
+
+<LI>
+<A HREF="#OBJ">Objects</a></li>
+
+<LI>
+<A HREF=#CTL>Extensions and Controls</a></li>
+
+<LI>
+<A HREF=#JAR>Provider Contents</a></li>
+
+<LI>  
+<A HREF="#JDK14">Java<sup>TM</sup> 2 SDK, Standard Edition, v 1.4</A></LI>
+
+<LI>  
+<A HREF="#JDK13">Java<sup>TM</sup> 2 SDK, Standard Edition, v 1.3</A></LI>
+
+<LI>  
+<A HREF="#JDK12">Java<sup>TM</sup> 2 SDK, Standard Edition, v 1.2.x</A></LI>
+   
+<LI>
+<A HREF="#JDK11">JDK<sup>TM</sup> 1.1.x</A></LI>
+
+</UL>
+<P>
+<HR>
+<P>
+
+<A NAME="INTRO"></a>
+<H2>1. Introduction</H2>
+<p>
+
+The LDAP service provider is divided into three components:
+a base provider, a security pack, and a
+booster pack. The base provider implements the basic features of an
+LDAP service provider for JNDI.
+The security pack provides support for SASL authentication and
+the "Start TLS" extension.
+The booster pack implements additional features, including support for
+a number of popular LDAP controls, additional SASL authentication
+mechanisms, and factories for storing and reading Java RMI and CORBA objects. 
+<p>
+The base provider and the features in the security pack are described
+in the main <a href=jndi-ldap.html>LDAP Service Provider</a> document.
+The features in the booster pack are described in this document.
+<p>
+This document also describes how to use the LDAP service provider
+with the Java 2 SDK, Standard Edition, v 1.4 to v1.2,
+and the JDK 1.1.x.
+It is a companion to the main
+<a href=jndi-ldap.html>LDAP Service Provider</a>
+document.
+
+<p>
+<HR>
+<P>
+
+<A NAME="SASL"></a>
+<H2>2. SASL</H2>
+
+The <a href=jndi-ldap.html#SASL>security pack</a>
+supports SASL authentication and includes support for the following mechanisms.
+<ul>
+<li>EXTERNAL (<A HREF="ftp://ftp.isi.edu/in-notes/rfc2222.txt">RFC 2222</A>).
+This mechanism obtains authentication information 
+from an external source (such as SSL/TLS or IPsec).
+<li>DIGEST-MD5 (<a href=ftp://ftp.isi.edu/in-notes/rfc2831.txt>RFC 2831</a>)
+is for Digest Authentication.
+<li>GSSAPI (<A HREF="ftp://ftp.isi.edu/in-notes/rfc2222.txt">RFC 2222</A>)
+is for Kerberos V5 authentication.
+</ul>
+
+The booster pack contains support for the following additional SASL mechanisms.
+These mechanisms are made available automatically when you include the
+booster pack in the classpath of your application or install it in the JRE.
+Additional mechanisms may be supplied by the application or other vendors.
+
+<br>&nbsp;
+<center><table BORDER COLS=2 WIDTH="60%" NOSAVE >
+<tr NOSAVE>
+<th NOSAVE>SASL Mechanism</th>
+
+<th NOSAVE>Comments</th>
+</tr>
+
+<tr ALIGN=CENTER NOSAVE>
+<td NOSAVE>CRAM-MD5</td>
+
+<td><A HREF="ftp://ftp.isi.edu/in-notes/rfc2195.txt">RFC 2195</A></td>
+</tr>
+
+<tr ALIGN=CENTER NOSAVE>
+<td NOSAVE>PLAIN</td>
+
+<td><A HREF="http://ftp.isi.edu/in-notes/rfc2595.txt">RFC 2595</A>;
+Not used with LDAP but could be used with other services such as IMAP and POP.
+</td>
+</tr>
+
+<tr ALIGN=CENTER NOSAVE>
+<td NOSAVE>ANONYMOUS</td>
+
+<td><A HREF="ftp://ftp.isi.edu/in-notes/rfc2245.txt">RFC 2245</A>;
+Not used with LDAP but could be used with other services such as IMAP and POP.
+</td>
+</tr>
+</table></center>
+
+</td>
+</tr>
+
+
+<p>
+<HR>
+<P>
+
+<A NAME="OBJ"></a>
+<H2>3. Objects</H2>
+<h4>3.1. Bundled Factories</h4>
+<p>
+The booster pack contains object and state factories for storing
+and reading RMI and CORBA objects, as specified in
+<a href="jndi-ldap-gl.html#OBJ">Guidelines for LDAP Service Providers</a>.
+
+<br>&nbsp;
+<center><table BORDER CELLPADDING=3 WIDTH="100%" NOSAVE >
+<tr NOSAVE>
+<th NOSAVE>Package</th>
+
+<th>State Factory</th>
+
+<th>Object Factory</th>
+</tr>
+
+<tr NOSAVE>
+<td COLSPAN="4" NOSAVE><b>RMI/JRMP objects</b></td>
+</tr>
+
+<tr NOSAVE>
+<td><tt>com.sun.jndi.ldap.obj</tt></td>
+
+<td NOSAVE><tt>RemoteToAttrs</tt></td>
+
+<td><tt>MarshalledToObject</tt></td>
+</tr>
+
+<tr NOSAVE>
+<td COLSPAN="4" NOSAVE><b>RMI/IIOP objects</b></td>
+</tr>
+
+<tr NOSAVE>
+<td NOSAVE><tt>com.sun.jndi.ldap.obj</tt></td>
+
+<td><tt>RemoteToCorbaToAttrs</tt></td>
+
+<td><tt>AttrsToCorba</tt></td>
+</tr>
+
+<tr NOSAVE>
+<td COLSPAN="4" NOSAVE><b>CORBA objects</b></td>
+</tr>
+
+<tr>
+<td><tt>com.sun.jndi.ldap.obj</tt></td>
+
+<td><tt>CorbaToAttrs</tt></td>
+
+<td><tt>AttrsToCorba</tt></td>
+</tr>
+</table></center>
+<p>
+By default, the LDAP service provider has been configured to use these
+factories if they are available.
+
+<p>A RMI/JRMP object is stored either as a <tt>java.rmi.MarshalledObject</tt>
+or as a JNDI <tt>Reference</tt>, as described in
+<a href="http://www.ietf.org/rfc/rfc2713.txt">RFC 2713</a>.
+To store an RMI/JRMP object as a JNDI reference, you create a <tt>Reference</tt>
+containing the rmi URL name of the object as the address, and then
+bind the <tt>Reference</tt>.
+A CORBA object is stored in the directory by 
+recording its stringified IOR as an attribute, according to
+<a href="http://www.ietf.org/rfc/rfc2714.txt">RFC 2714</a>.
+An RMI/IIOP object is stored as a CORBA object. That is, the RMI/IIOP
+object's corresponding stringified IOR is stored. 
+<p>
+See the <a href=http://java.sun.com/products/jndi/tutorial/objects/>JNDI Tutorial</a>
+for examples of how to store and read objects.
+
+<h4>3.2. Adding Other Object and State Factories</h4>
+To add an object factory to be used by the LDAP service provider,
+you add its fully qualified class name to the 
+<tt><a href="jndi-ldap-gl.html#object">java.naming.factory.object</a></tt>
+property. Similarly, to add a state factory, you add its fully
+qualified class name to the
+<tt><a href="jndi-ldap-gl.html#state">java.naming.factory.state</a></tt>
+property.
+Typically, the setting of the
+<tt>java.naming.factory.state</tt> and <tt>java.naming.factory.object</tt>
+properties
+should be symmetric in that if you add, for instance, a CORBA factory
+to the state factory property, you should also add the corresponding
+CORBA factory to the object factory property. 
+See the
+<a href=http://java.sun.com//products/jndi/1.2/javadoc/javax/naming/InitialContext.html#ENVIRONMENT>JNDI documentation</a> for a 
+description of how to set System and environment properties.
+
+
+<p>
+<hr><p>
+<A NAME="CTL"></a>
+<h2>
+4. Extensions and Controls</h2>
+
+<h4>4.1. Extensions</h4>
+
+<p>The LDAP service provider supports a framework for plugging in 
+extended operations. 
+The <a href=jndi-ldap.html#SSL>security pack</a> supports the
+the <a href="http://www.ietf.org/rfc/rfc2830.txt">"Start
+TLS" extension</a> ("1.3.6.1.4.1.1466.20037").
+The booster pack supplies no additional extensions.
+
+<br>&nbsp;
+<table BORDER COLS=3 WIDTH="100%" NOSAVE >
+<tr NOSAVE>
+<th NOSAVE>Extended Operation</th>
+
+<th NOSAVE>Package</th>
+
+<th NOSAVE>Class name(s)</th>
+</tr>
+
+<tr>
+<td>&nbsp;<i>extended operations supplied by application or vendors</i></td>
+
+<td>&nbsp;</td>
+
+<td>&nbsp;</td>
+</tr>
+</table>
+
+<h4>4.2. Controls</h4>
+
+<p>
+<p>The LDAP service provider and booster pack support the following LDAP controls:
+<br>&nbsp;
+<center><table BORDER CELLPADDING=3 WIDTH="100%" NOSAVE >
+<tr NOSAVE>
+<th NOSAVE>Package</th>
+
+<th>Class name(s)</th>
+
+<th>Factory</th>
+</tr>
+
+<tr NOSAVE>
+<td COLSPAN="4" NOSAVE><b><a href="http://www.ietf.org/internet-drafts/draft-ietf-ldapext-namedref-00.txt">ManageDsaIT</a>
+control</b></td>
+</tr>
+
+<tr NOSAVE>
+<td><tt>com.sun.jndi.ldap</tt></td>
+
+<td NOSAVE><tt><a href=../ldapcontrols/com/sun/jndi/ldap/ManageReferralControl.html>ManageReferralControl</a></tt></td>
+
+<td>&nbsp;</td>
+</tr>
+
+<tr NOSAVE>
+<td COLSPAN="4" NOSAVE><b><a href="http://www.ietf.org/internet-drafts/draft-ietf-ldapext-psearch-03.txt">PersistentSearch</a>
+control</b></td>
+</tr>
+
+<tr NOSAVE>
+<td><tt>com.sun.jndi.ldap</tt></td>
+
+<td NOSAVE><tt><a href=../ldapcontrols/com/sun/jndi/ldap/PersistentSearchControl.html>PersistentSearchControl</tt></a>
+<br><tt><a href=../ldapcontrols/com/sun/jndi/ldap/EntryChangeResponseControl.html>EntryChangeResponseControl</tt></a></td>
+
+<td>&nbsp;</td>
+</tr>
+
+<tr NOSAVE>
+<td COLSPAN="4" NOSAVE><b>
+<a href=http://www.ietf.org/rfc/rfc2696.txt>PagedResults</a>
+control</b></td>
+</tr>
+
+<tr>
+<td><tt>com.sun.jndi.ldap.ctl</tt></td>
+
+<td><tt><a href=../ldapcontrols/com/sun/jndi/ldap/ctl/PagedResultsControl.html>PagedResultsControl</tt></a>
+<br><tt><a href=../ldapcontrols/com/sun/jndi/ldap/ctl/PagedResultsResponseControl.html>PagedResultsResponseControl</tt></a></td>
+
+<td>&nbsp;<tt><a href=../ldapcontrols/com/sun/jndi/ldap/ctl/ResponseControlFactory.html>ResponseControlFactory</tt></a></td>
+</tr>
+
+<tr NOSAVE>
+<td COLSPAN="4" NOSAVE><b><a href="http://www.ietf.org/rfc/rfc2891.txt">ServerSideSort</a> control</b></td>
+</tr>
+
+<tr NOSAVE>
+<td><tt>com.sun.jndi.ldap.ctl</tt></td>
+
+<td NOSAVE><tt><a href=../ldapcontrols/com/sun/jndi/ldap/ctl/SortControl.html>SortControl</a></tt>
+<br><tt><a href=../ldapcontrols/com/sun/jndi/ldap/ctl/SortControlResponse.html>SortControlResponse</tt></a></td>
+
+<td>&nbsp;<tt><a href=../ldapcontrols/com/sun/jndi/ldap/ctl/ResponseControlFactory.html>ResponseControlFactory</tt></a></td>
+</tr>
+
+<tr NOSAVE>
+<td COLSPAN="4" NOSAVE><b><a href="http://www.ietf.org/internet-drafts/draft-ietf-ldapext-vlv-04.txt.txt">VirtualListView</a> control</b></td>
+</tr>
+
+<tr>
+<td><tt>com.sun.jndi.ldap.ctl</tt></td>
+
+<td><tt><a href=../ldapcontrols/com/sun/jndi/ldap/ctl/VirtualListViewControl.html>VirtualListViewControl</tt></a>
+<br><tt><a href=../ldapcontrols/com/sun/jndi/ldap/ctl/VirtualListViewResponseControl.html>VirtualListViewResponseControl</tt></a></td>
+
+<td>&nbsp;<tt><a href=../ldapcontrols/com/sun/jndi/ldap/ctl/ResponseControlFactory.html>ResponseControlFactory</tt></a></td>
+</tr>
+
+<tr NOSAVE>
+<td COLSPAN="4" NOSAVE><b>
+<a href="http://www.ietf.org/internet-drafts/draft-armijo-ldap-treedelete-02.txt">TreeDelete</a> control</b></td>
+</tr>
+
+<tr>
+<td><tt>com.sun.jndi.ldap.ctl</tt></td>
+
+<td><tt><a href=../ldapcontrols/com/sun/jndi/ldap/ctl/TreeDeleteControl.html>TreeDeleteControl</tt></a>
+</td>
+
+<td>&nbsp;</td>
+</tr>
+
+<tr NOSAVE>
+<td COLSPAN="4" NOSAVE><b>
+ <a href="http://www.ietf.org/internet-drafts/draft-armijo-ldap-dirsync-01.txt">DirSync</a> control</b></td>
+</tr>
+
+<tr>
+<td><tt>com.sun.jndi.ldap.ctl</tt></td>
+
+<td><tt><a href=../ldapcontrols/com/sun/jndi/ldap/ctl/DirSyncControl.html>DirSyncControl</tt></a>
+<br><tt><a href=../ldapcontrols/com/sun/jndi/ldap/ctl/DirSyncResponseControl.html>DirSyncResponseControl</tt></a></td>
+
+<td>&nbsp;<tt><a href=../ldapcontrols/com/sun/jndi/ldap/ctl/ResponseControlFactory.html>ResponseControlFactory</tt></a></td>
+</tr>
+
+
+
+<tr NOSAVE>
+<td COLSPAN="4" NOSAVE><i>other controls supplied by application or vendors</i>
+</td>
+</tr>
+
+</table></center>
+<p>
+By default, the LDAP service provider has been configured to use
+these controls if they are available.
+To add additional response control factories, 
+add the fully qualified class names of the factory to the
+<tt><a href="jndi-ldap-gl.html#control">java.naming.factory.control</a></tt>
+property.
+See the
+<a href=http://java.sun.com//products/jndi/1.2/javadoc/javax/naming/InitialContext.html#ENVIRONMENT>JNDI documentation</a> for a 
+description of how to set System and environment properties.
+<p>
+
+<hr>
+<p>
+<A NAME="JAR">
+<H2>5. Provider Contents
+</H2></a>
+<p>
+
+The LDAP service provider runtime contains 5 JARs.  The following
+table shows the distribution of features in these JARs.  See Sections
+6-9 for instructions on how to install these JARs on different
+versions of the Java platform.
+
+<br>&nbsp;
+<table BORDER CELLPADDING=3 WIDTH="100%" NOSAVE >
+<tr>
+<th>JARs</th>
+
+<th>Description</th>
+<th>Contents</th>
+</tr>
+
+<tr>
+<td><tt>ldap.jar</tt>
+<br><tt>providerutil.jar</tt>
+</td>
+<td>Basic service provider for LDAP v2 and v3</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td><tt>ldapsec.jar</tt>
+<td>Security Pack</td>
+<td>Start TLS<br>
+SASL authentication framework<br>
+EXTERNAL SASL mechanism<br>
+DIGEST-MD5 SASL mechanism<br>
+GSSAPI (Kerberos v5) SASL mechanism
+</td>
+</tr>
+
+<tr>
+<td><tt>ldapbp.jar</tt></td>
+<td>Booster Pack</td>
+<td>RMI object and state factories<br>
+RMI-IIOP and CORBA object and state factories</br>
+CRAM-MD5 SASL mechanism</br>
+Paged Results control</br>
+Server-side Sort control</br>
+Virtual-list-view control</br>
+Tree-delete control</br>
+Dir sync control</br>
+</td>
+</tr>
+
+<tr>
+<td><tt>jaas.jar</tt></td>
+<td>Java Authentication and Authorization Service
+</td>
+<td>&nbsp;</td>
+</tr>
+
+</tr>
+</table>
+
+
+<hr>
+<p>
+<A NAME="JDK14">
+<H2>6. Java 2 SDK, Standard Edition, v 1.4
+</H2></a>
+
+J2SDK v 1.4 already comes with an LDAP service provider.  You need to
+use the following procedure only if you plan on using CRAM-MD5 SASL
+authentication, LDAP v3 controls, or RMI/CORBA object factories.
+
+<p>
+<h4>6.1. Software Dependencies</h4>
+
+<ul>
+<li>
+A server that speaks the LDAP v2 or v3 protocol.
+</ul>
+
+<h4>6.2. Software Installation</h4>
+
+<ol>
+<li>Unzip the distribution file to get a <tt>lib</tt> directory. 
+
+<li>If you are installing the LDAP provider as an <em>installed</em>
+extension, copy <tt>ldapbp.jar</tt>
+from the <tt>lib</tt> directory to the <tt>$JAVA_HOME/jre/lib/ext</tt> directory.
+
+<li>If you are not installing the LDAP provider as an installed extension,
+copy <tt>ldapbp.jar</tt> to their permanent locations 
+and add them to your classpath.
+</ol>
+
+You do not need to include <tt>ldap.jar</tt>, <tt>ldapsec.jar</tt>,
+or <tt>providerutil.jar</tt> because their packages are already
+part of the runtime of the Java 2 SDK, Standard Edition, v 1.4.
+
+ 
+
+<h4>6.3. Security Considerations</h4>
+
+Follow the instructions in
+<a href="jndi-ldap.html#SEC">the LDAP Service Provider document</a>
+to grant your application the appropriate permissions.
+<p>
+
+If you are using the RMI and CORBA factories and working with RMI/CORBA
+objects, you must grant the appropriate <tt>java.net.SocketPermission</tt>
+to the application.
+If you are working with RMI, 
+the usual security considerations of RMI apply.  For RMI to
+dynamically load classes from a remote server, a security manager must
+first be installed.  This can be done in the same way as it would for
+any other RMI application.  See the 
+<a href="http://java.sun.com/products/jdk/1.2/docs/guide/rmi/spec/rmiTOC.doc.html">
+Java<sup>TM</sup> Remote Method Invocation Specification</a>.  
+If you are installing a security manager, the application needs
+the following permission:
+<pre>permission java.lang.RuntimePermission "setSecurityManager";</pre>
+
+<p>
+If you have installed the LDAP service provider as an
+installed extension, that is, <tt>ldapbp.jar</tt>
+has been installed in the <tt>$JAVA_HOME/jre/lib/ext</tt> directory, 
+you need to take no further action.
+<p>
+Otherwise, perform the following additional steps:
+<ul>
+<li>Grant the permissions listed in
+<a href="jndi-ldap.html#SEC">the LDAP Service Provider document</a>
+to <tt>ldapbp.jar</tt>.
+<li>Grant the permissions listed above to <tt>ldapbp.jar</tt>.
+<li>Grant the following permission to <tt>ldapbp.jar</tt> 
+if the application/applet code is loaded using a different classloader
+than the one that loaded <tt>ldapbp.jar</tt>:
+<br>
+<pre>permission java.lang.RuntimePermission "getClassLoader";</pre>
+</ol>
+<p>
+
+<hr>
+<p>
+<A NAME="JDK13">
+<H2>7. Java 2 SDK, Standard Edition, v 1.3
+</H2></a>
+<p>
+
+J2SDK v 1.3 already comes with an LDAP service provider. You need to
+use the following instructions only if you plan on using SASL
+authentication, LDAP v3 controls, or RMI/CORBA object factories.
+
+<p>
+<em>Note 1</em>: 
+If you plan on using SASL authentication, Sun recommends that you
+use v 1.4 if at all possible, and only use the following procedure as
+an interim measure until you can migrate to v 1.4.
+
+<p>
+<em>Note 2</em>: The <a href="http://www.ietf.org/rfc/rfc2830.txt">"Start
+TLS" extension</a> ("1.3.6.1.4.1.1466.20037") is supported only on the 
+Java 2 Platform, v1.4; it is not supported on v 1.3.
+
+
+
+<h4>7.1. Software Dependencies</h4>
+
+<ol>
+<li>
+(if you use the DIGEST-MD5 or GSSAPI SASL mechanism for authentication)
+The Java Cryptography Extension (JCE), version 1.2 or 1.2.1, available at
+<a href=http://java.sun.com/products/jce>http://java.sun.com/products/jce</a>.
+<li>
+(if you use the GSSAPI SASL mechanism for authentication)
+An implementation of the Java GSSAPI (JGSS)
+(<a href=ftp://ftp.isi.edu/in-notes/rfc2853.txt>RFC 2853</a>)
+and an implementation of Kerberos v5 client.
+<li>
+(if you use SSL)
+The Java Secure Socket Extension (JSSE) 1.0.x, available at
+<a href=http://java.sun.com/products/jsse>http://java.sun.com/products/jsse</a>.
+<li>
+A server that speaks the LDAP v2 or v3 protocol.
+</ol>
+
+
+<h4>7.2. Software Installation</h4>
+
+<ol>
+<li>Unzip the distribution file to get a <tt>lib</tt> directory. 
+
+<li>If you use SASL authentication, 
+override the LDAP provider that is already in v 1.3.
+Copy <tt>ldap.jar</tt> and <tt>providerutil.jar</tt> to their permanent locations.
+Include these two JARs in the <tt>-Xbootclasspath:/p</tt> option of the
+<tt>java</tt> command line. For example, on Solaris and assuming that the
+JARs have been installed in the <tt>$JNDI</tt> directory, 
+use the following command line.
+<blockquote>
+<pre>
+#java -Xbootclasspath/p:$JNDI/ldap.jar:$JNDI/providerutil.jar YourProgram
+</pre>
+</blockquote>
+
+This configuration is <em>not</em> recommended to be used in a live, production
+environment.
+
+
+<li>If you are installing the LDAP provider as an <em>installed</em>
+extension, copy <tt>ldapsec.jar</tt>, <tt>ldapbp.jar</tt> and <tt>jaas.jar</tt>
+from the <tt>lib</tt> directory to the <tt>$JAVA_HOME/jre/lib/ext</tt> directory.
+If you are not using SASL authentication, omit <tt>ldapsec.jar</tt>
+and <tt>jaas.jar</tt>.
+
+
+<li>If you are not installing the LDAP provider as an installed extension,
+copy <tt>ldapsec.jar</tt>, <tt>ldapbp.jar</tt> and <tt>jaas.jar</tt> 
+to their permanent locations and add them to your classpath.
+If you are not using SASL authentication, omit <tt>ldapsec.jar</tt>
+and <tt>jaas.jar</tt>.
+</ol>
+
+
+<h4>7.3. Security Considerations</h4>
+
+Follow the instructions in
+<a href="jndi-ldap.html#SEC">the LDAP Service Provider document</a>
+to grant your application the appropriate permissions.
+<p>
+
+If you are using the RMI and CORBA factories and working with RMI/CORBA
+objects, you must grant the appropriate <tt>java.net.SocketPermission</tt>
+to the application.
+If you are working with RMI, 
+the usual security considerations of RMI apply.  For RMI to
+dynamically load classes from a remote server, a security manager must
+first be installed.  This can be done in the same way as it would for
+any other RMI application.  See the 
+<a href="http://java.sun.com/products/jdk/1.2/docs/guide/rmi/spec/rmiTOC.doc.html">
+Java<sup>TM</sup> Remote Method Invocation Specification</a>.  
+If you are installing a security manager, the application needs
+the following permission.
+<pre>permission java.lang.RuntimePermission "setSecurityManager";</pre>
+
+<p>
+If you have installed the LDAP service provider as an
+installed extension, that is, <tt>ldapsec.jar</tt>,
+<tt>ldapbp.jar</tt> and <tt>jaas.jar</tt> 
+have been installed in the <tt>$JAVA_HOME/jre/lib/ext</tt> directory, 
+you need to take no further action.
+<p>
+Otherwise, perform the following additional steps:
+<ul>
+<li>Grant the permissions listed in
+<a href="jndi-ldap.html#SEC">the LDAP Service Provider document</a>
+to <tt>ldapbp.jar</tt> and <tt>ldapsec.jar</tt>.
+<li>Grant the permissions listed above to <tt>ldapbp.jar</tt> and <tt>ldapsec.jar</tt>.
+<li>Grant the following permission to <tt>ldapbp.jar</tt> and <tt>ldapsec.jar</tt>
+if the application/applet code is loaded using a different classloader
+than the one that loaded <tt>ldapbp.jar</tt> and <tt>ldapsec.jar</tt>:
+<br>
+<pre>permission java.lang.RuntimePermission "getClassLoader";</pre>
+<li>
+If you are using SASL authentication, 
+then grant the following permission to <tt>ldapsec.jar</tt>.
+<pre>
+permission java.util.PropertyPermission "javax.security.sasl.client.pkgs", "read";
+</pre>
+
+</ol>
+<p>
+<hr>
+
+<p>
+<A NAME="JDK12"></a>
+<H2>8. Java 2 SDK, Standard Edition, v 1.2.x
+</H2>
+<p>
+<em>Note</em>: The <a href="http://www.ietf.org/rfc/rfc2830.txt">"Start
+TLS" extension</a> ("1.3.6.1.4.1.1466.20037") is supported only on the 
+Java 2 Platform, v1.4; it is not supported on v 1.2.
+<p>
+<h4>8.1. Software Dependencies</h4>
+
+<ol>
+<li>
+<a href=http://java.sun.com/products/jndi/#download>JNDI 1.2</a>.
+<li>
+<a href=http://java.sun.com/products/rmi-iiop>RMI-IIOP</a> -
+To bind RMI-IIOP objects, you need the <tt>javax.rmi.CORBA</tt> package,
+available as part of RMI-IIOP.
+<li>
+(if you use the DIGEST-MD5 or GSSAPI SASL mechanism for authentication)
+The Java Cryptography Extension (JCE), version 1.2 or 1.2.1, available at
+<a href=http://java.sun.com/products/jce>http://java.sun.com/products/jce</a>.
+<li>
+(if you use the GSSAPI SASL mechanism for authentication)
+An implementation of the Java GSSAPI (JGSS)
+(<a href=ftp://ftp.isi.edu/in-notes/rfc2853.txt>RFC 2853</a>)
+and an implementation of Kerberos v5 client.
+<li>
+(if you use SSL)
+The Java Secure Socket Extension (JSSE) 1.0.x, available at
+<a href=http://java.sun.com/products/jsse>http://java.sun.com/products/jsse</a>.
+<li>
+A server that speaks the LDAP v2 or v3 protocol.
+</ol>
+
+
+
+<h4>8.2. Software Installation</h4>
+
+<ol>
+<li>Unzip the distribution file to get a <tt>lib</tt> directory. 
+
+<li>If you are using JNDI as an <em>installed</em>
+extension, copy the JARs (<tt>ldap.jar</tt>, <tt>ldapsec.jar</tt>,
+<tt>ldapbp.jar</tt>, <tt>providerutil.jar</tt>, and <tt>jaas.jar</tt>)
+from the <tt>lib</tt> directory to the <tt>$JAVA_HOME/jre/lib/ext</tt> directory.
+
+<li>If you are not using JNDI as an installed extension,
+copy the JARs to their permanent locations and add their locations
+to your classpath.
+</ol>
+ 
+
+<h4>8.3. Security Considerations</h4>
+
+Follow the instructions in
+<a href="jndi-ldap.html#SEC">the LDAP Service Provider document</a>
+to grant your application the appropriate permissions.
+<p>
+If you are using the RMI and CORBA factories and working with RMI/CORBA
+objects, you must grant the appropriate <tt>java.net.SocketPermission</tt>
+to the application.
+If you are working with RMI, 
+the usual security considerations of RMI apply.  For RMI to
+dynamically load classes from a remote server, a security manager must
+first be installed.  This can be done in the same way as it would for
+any other RMI application.  See the 
+<a href="http://java.sun.com/products/jdk/1.2/docs/guide/rmi/spec/rmiTOC.doc.html">
+Java<sup>TM</sup> Remote Method Invocation Specification</a>.  
+If you are installing a security manager, the application needs
+the following permission:
+<pre>permission java.lang.RuntimePermission "setSecurityManager";</pre>
+
+
+<p>
+If you are using JNDI and the LDAP service provider as an
+installed extension, that is, their JARs have been installed in the
+<tt>$JAVA_HOME/jre/lib/ext</tt> directory, you need to take no further
+action.
+<p>
+<p>
+Otherwise, perform the following additional steps:
+<ul>
+<li>Grant the permissions listed in
+<a href="jndi-ldap.html#SEC">the LDAP Service Provider document</a>
+to  the LDAP service provider (<tt>ldap.jar</tt>, <tt>ldapsec.jar</tt>,
+<tt>ldapbp.jar</tt>, <tt>providerutil.jar</tt>) and JNDI (<tt>jndi.jar</tt>).
+<li>Grant the permissions listed above
+to the LDAP service provider (<tt>ldap.jar</tt>, <tt>ldapsec.jar</tt>,
+<tt>ldapbp.jar</tt>, <tt>providerutil.jar</tt>)
+and JNDI (<tt>jndi.jar</tt>).
+<li>Grant the following permission to the LDAP service provider
+(<tt>ldap.jar</tt>, <tt>ldapsec.jar</tt>, <tt>ldapbp.jar</tt>, 
+<tt>providerutil.jar</tt>)
+if the application/applet code is loaded using a different classloader
+than the one that loaded the LDAP service provider:
+<br>
+<pre>permission java.lang.RuntimePermission "getClassLoader";</pre>
+<li>Grant the permissions listed in
+<a href="../jndi-ext.html#SEC">the JNDI 1.2 Optional Package document</a>.
+<li>
+If you are using SASL authentication,
+grant following permissions to <tt>ldapsec.jar</tt>
+<pre>
+permission java.util.PropertyPermission "javax.security.sasl.client.pkgs", "read";
+</pre>
+</ol>
+<p>
+<hr>
+<p>
+<A NAME="JDK11"></a>
+<H2>9. JDK 1.1.x</h2>
+<p>
+<em>Note 1</em>: You cannot use the RMI/JRMP state and object factories with
+JDK 1.1.x because those factories depend on classes in the
+Java 2 Platform, Standard Edition, v1.2.
+If you will be using the booster pack, then you need to
+remove references to the RMI/JRMP factories.
+See Step 2 in Section 9.2.
+<p>
+<em>Note 2</em>: The <a href="http://www.ietf.org/rfc/rfc2830.txt">"Start
+TLS" extension</a> ("1.3.6.1.4.1.1466.20037") is supported only on the 
+Java 2 Platform, v1.4; it is not supported on v 1.1.x.
+<p>
+<em>Note 3</em>: SASL authentication is not supported on the v 1.1.x platform.
+
+
+<h4>9.1 Software Dependencies</h4>
+
+<ol>
+<li>
+<a href=http://java.sun.com/products/jndi/#download>JNDI 1.2</a>.
+<li>
+<a href=http://java.sun.com/products/jdk/1.2/docs/guide/idl>Java<font size="-2"><sup>TM</sup></font> IDL</a> -
+If using the CORBA or RMI/IIOP factories.
+A version of Java IDL for JDK 1.1.x is available as part of the
+<a href=http://java.sun.com/products/rmi-iiop>RMI-IIOP</a></b> distribution.
+<li>
+<a href=http://java.sun.com/products/rmi-iiop>RMI-IIOP</a> -
+To bind RMI-IIOP objects, you need the <tt>javax.rmi.CORBA</tt> package,
+available as part of RMI-IIOP.
+<li>
+A server that speaks the LDAP v2 or v3 protocol.
+</ol>
+
+<h4>9.2. Software Installation</h4>
+
+<ol>
+<li>Unzip the distribution file to get a <tt>lib</tt> directory. 
+
+<li>Remove references to the RMI/JRMP factories.
+The only two features in the booster pack that are supported on JDK 1.1.x
+are RMI-IIOP/CORBA factories and LDAP v3 controls.
+If you will be using these features, you need to
+remove references to the RMI/JRMP factories because they
+depend on the Java 2 platform.
+<p>
+If you will not be using the features in the booster pack, 
+you can just omit
+installing <tt>ldapbp.jar</tt> and <tt>jaas.jar</tt>. This will remove
+references to the RMI/JRMP factories.
+<p>
+If you will be using the features in the booster pack, you can delete
+references to these factories as follows:
+<ol>
+<li>Unzip <tt>ldap.jar</tt>.
+<li>Edit <tt>com/sun/jndi/ldap/jndiprovider.properties</tt> and remove all
+occurrences of <tt>com.sun.jndi.ldap.obj.RemoteToAttrs</tt> and
+<tt>com.sun.jndi.ldap.obj.MarshalledToObject</tt>.
+<li>Repackage <tt>ldap.jar</tt> using the <em>jar</em> command.
+</ol>
+<p>
+<li>Remove <tt>ldapsec.jar</tt> and <tt>jaas.jar</tt> because
+their features depend on the Java 2 platform.
+
+<li>Copy <tt>ldap.jar</tt>, <tt>providerutil.jar</tt>, and <tt>ldapbp.jar</tt>
+from the <tt>lib</tt> directory to their permanent location.
+Do not copy <tt>ldapsec.jar</tt> and <tt>jaas.jar</tt>.
+If you will not be using the booster pack, omit <tt>ldapbp.jar</tt>.
+<li>Add the location of the JARs to your classpath.
+</ol>
+ 
+
+<h4>9.3. Security Considerations</h4>
+
+Follow the instructions in
+<a href="../jndi-ext.html#JDK11">the JNDI Optional Package document</a>.
+<p>
+If you are using JNDI and the LDAP service provider from an
+applet, you need to grant the applet permission
+to connect to the host/port pairs identified in the
+<tt>java.naming.factory.initial</tt> property, in URL string names
+supplied to context methods, and in RMI or CORBA objects.
+If you are working with RMI, 
+the usual security considerations of RMI apply.  For RMI to
+dynamically load classes from a remote server, a security manager must
+first be installed.  This can be done in the same way as it would for
+any other RMI application.  See the 
+<a href="http://java.sun.com/products/jdk/1.2/docs/guide/rmi/spec/rmiTOC.doc.html">
+Java<sup>TM</sup> Remote Method Invocation Specification</a>.  
+<p>
+When a <tt>Reference</tt> or <tt>Serializable</tt> object is read from
+the directory and a codebase specifying where to load the classes is 
+stored as one of the object's LDAP attributes, the LDAP provider will
+attempt to load the classes using the <tt>RMIClassLoader</tt>. 
+In order for the class loading to succeed, the application needs to
+to install a security manager
+For example, you can install the <tt>RMISecurityManager</tt> as follows:
+<blockquote>
+<pre>
+System.setSecurityManager(new java.rmi.RMISecurityManager());
+</pre>
+</blockquote>
+
+
+<HR SIZE=3 NOSHADE WIDTH=100%>
+<br><i>Copyright &copy; 2001 Sun Microsystems, Inc., All Rights Reserved.</i> 
+
+   
+</body>
+</html>
+

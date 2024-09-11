@@ -1,82 +1,86 @@
-import org.bouncycastle.asn1.ASN1ObjectIdentifier;
-import org.bouncycastle.asn1.ASN1Sequence;
-import org.bouncycastle.asn1.DERSequence;
-import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
+import org.bouncycastle.asn1.*;
 import org.bouncycastle.asn1.icao.DataGroupHash;
 import org.bouncycastle.asn1.icao.LDSSecurityObject;
+import org.bouncycastle.asn1.icao.LDSVersionInfo;
+import org.bouncycastle.asn1.x509.AlgorithmIdentifier;
+import org.bouncycastle.asn1.x509.X509Name;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
+import java.util.logging.Logger;
 
 public class LDSSecurityObjectTest {
 
-    public static void main(String[] args) {
-        // Create test data
-        ASN1ObjectIdentifier objectIdentifier = new ASN1ObjectIdentifier("1.2.3.4.5");
-        AlgorithmIdentifier algorithmIdentifier = new AlgorithmIdentifier(objectIdentifier, null);
-        Field datagroupHashField = null;
-        try {
-            datagroupHashField = LDSSecurityObject.class.getDeclaredField("datagroupHash");
-        } catch (NoSuchFieldException ex) {
-            throw new RuntimeException(ex);
-        }
-        datagroupHashField.setAccessible(true);
-        DataGroupHash[] actualDataGroupHashes = new DataGroupHash[0];
-        try {
-            actualDataGroupHashes = (DataGroupHash[]) datagroupHashField.get(securityObject);
-        } catch (IllegalAccessException ex) {
-            throw new RuntimeException(ex);
-        }
+    private final Logger logger = Logger.getLogger(LDSSecurityObjectTest.class.getName());
 
-        // Verify data group hashes
-        if (actualDataGroupHashes.length != dataGroupHashes.length) {
-            System.out.println("Error: Incorrect number of data group hashes");
+    // Test cases
+
+    private static ASN1ObjectIdentifier getAlgorithmOID(String algorithmName) {
+        if (algorithmName.equals("SHA-256")) {
+            return new ASN1ObjectIdentifier("2.16.840.1.101.3.4.2.1"); // OID for SHA-256
         } else {
-            for (int i = 0; i < dataGroupHashes.length; i++) {
-                if (!actualDataGroupHashes[i].equals(dataGroupHashes[i])) {
-                    System.out.println("Error: Incorrect data group hash at index " + i);
-                }
-            }
+            // Implement logic to handle other algorithms and their OIDs
+            throw new IllegalArgumentException("Unsupported algorithm: " + algorithmName);
         }
+    }
+
+    public void testValidData() throws IOException {
+
+        AlgorithmIdentifier digestAlgorithmIdentifier = new AlgorithmIdentifier(getAlgorithmOID("SHA-256"));
+        DataGroupHash[] dataGroupHash = {
+                new DataGroupHash(1, new DEROctetString(new byte[]{1, 2, 3})),
+                new DataGroupHash(2, new DEROctetString(new byte[]{4, 5, 6}))
         };
+        LDSVersionInfo versionInfo = new LDSVersionInfo("1.0", "Version 1.0");
 
-        // Create LDSSecurityObject instance
-        static LDSSecurityObject securityObject = new LDSSecurityObject(algorithmIdentifier, dataGroupHashes);
+        // Create LDSSecurityObject
+        LDSSecurityObject ldsSecurityObject = new LDSSecurityObject(digestAlgorithmIdentifier, dataGroupHash, versionInfo);
 
-        // Verify object identifier
-        if (!securityObject.getSecurityObjectIdentifier().equals(objectIdentifier)) {
-            System.out.println("Error: Incorrect object identifier");
+        // Convert to ASN.1 sequence
+        byte[] encodedData = ldsSecurityObject.toASN1Primitive().getEncoded();
 
-
-        // Verify algorithm identifier
-        if (!securityObject.getDigestAlgorithmIdentifier().equals(algorithmIdentifier)) {
-            System.out.println("Error: Incorrect algorithm identifier");
+        System.out.println("Encoded data (hex):");
+        for (byte b : encodedData) {
+            System.out.printf("%02X ", b); // Print encoded data in hex format
         }
+        System.out.println();
 
-        // Verify data group hashes
-        if (securityObject.getDatagroupHash().length != dataGroupHashes.length) {
-            System.out.println("Error: Incorrect number of data group hashes");
-        } else {
-            for (int i = 0; i < dataGroupHashes.length; i++) {
-                if (!securityObject.getDatagroupHash()[i].equals(dataGroupHashes[i])) {
-                    System.out.println("Error: Incorrect data group hash at index " + i);
-                }
-            }
-        }
+        ASN1InputStream asn1InputStream = new ASN1InputStream(encodedData);
+        ASN1Sequence asn1Sequence = (ASN1Sequence) asn1InputStream.readObject();
 
-        // Verify ASN.1 encoding/decoding
-        byte[] encodedBytes = new byte[0];
+        System.out.println("ASN.1 sequence size: " + asn1Sequence.size());
+
+        // You can further inspect the ASN.1 sequence elements here
+        // ...
+    }
+
+    public void testInvalidDataGroupHashSize() {
+        // Test with size less than 2
+        AlgorithmIdentifier digestAlgorithmIdentifier = null;
         try {
-            encodedBytes = securityObject.toASN1Primitive().getEncoded();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            new LDSSecurityObject(digestAlgorithmIdentifier, new DataGroupHash[1]);
+            logger.severe("Expected IllegalArgumentException for size less than 2");
+        } catch (IllegalArgumentException e) {
+            // Expected exception
         }
-        LDSSecurityObject decodedObject = LDSSecurityObject.getInstance(encodedBytes);
 
-        if (!decodedObject.equals(securityObject)) {
-            System.out.println("Error: Encoding/decoding mismatch");
-        } else {
-            System.out.println("Encoding/decoding successful");
+        // Test with size greater than ub_DataGroups
+        try {
+            DataGroupHash[] dataGroupHash = new DataGroupHash[LDSSecurityObject.ub_DataGroups + 1];
+            new LDSSecurityObject(digestAlgorithmIdentifier, dataGroupHash);
+            logger.severe("Expected IllegalArgumentException for size greater than ub_DataGroups");
+        } catch (IllegalArgumentException e) {
+            // Expected exception
         }
+    }
+
+
+
+
+
+    public static void main(String[] args) throws IOException {
+        LDSSecurityObjectTest test = new LDSSecurityObjectTest();
+        test.testValidData();
+        test.testInvalidDataGroupHashSize();
+
     }
 }

@@ -13,14 +13,30 @@
             <artifactId>bcprov-jdk15on</artifactId>
             <version>1.70</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/jars/bcprov-jdk15on-1.70.lineaje-b01.jar/</systemPath>
+            <systemPath>${project.basedir}/lib/jars/bcprov-jdk15on-1.70.lineaje-01.jar/</systemPath>
         </dependency>
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcutil-jdk15on</artifactId>
             <version>1.70</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/jars/bcutil-jdk15on-1.70.lineaje-b01.jar/</systemPath>
+            <systemPath>${project.basedir}/lib/jars/bcutil-jdk15on-1.70.lineaje-01.jar/</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bctls-jdk15on</artifactId>
+            <version>1.70</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/jars/bctls-jdk15on-1.70.lineaje-01.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bctest-jdk15on</artifactId>
+            <version>1.70</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/jars/bctest-jdk15on-1.70.lineaje-01.jar</systemPath>
         </dependency>
 
         <dependency>
